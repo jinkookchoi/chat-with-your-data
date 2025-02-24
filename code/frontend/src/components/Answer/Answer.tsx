@@ -109,14 +109,17 @@ export const Answer = ({
 
   useEffect(() => {
     const fetchSythesizerData = async () => {
+      // speech 기능임시 block
+      return
+
       const response = await fetch("/api/speech");
       try {
         if (!response.ok) {
-         throw new Error("Network response was not ok");
+          throw new Error("Network response was not ok");
         }
-      const data = await response.json();
-      setSynthesizerData({ key: data.key, region: data.region });
-      } catch(e) {
+        const data = await response.json();
+        setSynthesizerData({ key: data.key, region: data.region });
+      } catch (e) {
         console.log(e)
       }
     };
@@ -334,7 +337,7 @@ export const Answer = ({
                   }
                   data-testid="toggle-citations-list"
                 >
-                  <Text  className={styles.accordionTitle}>
+                  <Text className={styles.accordionTitle}>
                     <span data-testid="no-of-references">
                       {parsedAnswer.citations.length > 1
                         ? parsedAnswer.citations.length + " references"
@@ -375,7 +378,7 @@ export const Answer = ({
                   onKeyDown={(e) =>
                     e.key === " " || e.key === "Enter"
                       ? onCitationClicked(citation)
-                      : () => {}
+                      : () => { }
                   }
                   tabIndex={0}
                   title={createCitationFilepath(citation, ++idx)}
