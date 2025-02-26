@@ -13,7 +13,7 @@ from azure.storage.queue import QueueClient, BinaryBase64EncodePolicy
 import chardet
 from .env_helper import EnvHelper
 from azure.identity import DefaultAzureCredential
-from logging import logging
+import logging 
 
 
 logger = logging.getLogger(__name__)
