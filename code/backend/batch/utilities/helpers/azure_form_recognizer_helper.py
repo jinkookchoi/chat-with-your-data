@@ -12,10 +12,14 @@ logger = logging.getLogger(__name__)
 class AzureFormRecognizerClient:
     def __init__(self) -> None:
         env_helper: EnvHelper = EnvHelper()
+        
 
         self.AZURE_FORM_RECOGNIZER_ENDPOINT: str = (
             env_helper.AZURE_FORM_RECOGNIZER_ENDPOINT
         )
+        logger.info(f"azure_auth_type: {env_helper.AZURE_AUTH_TYPE}")
+        logger.info(f"endpoint: {env_helper.AZURE_FORM_RECOGNIZER_ENDPOINT}")
+
         if env_helper.AZURE_AUTH_TYPE == "rbac":
             self.document_analysis_client = DocumentAnalysisClient(
                 endpoint=self.AZURE_FORM_RECOGNIZER_ENDPOINT,
@@ -26,6 +30,7 @@ class AzureFormRecognizerClient:
             )
         else:
             self.AZURE_FORM_RECOGNIZER_KEY: str = env_helper.AZURE_FORM_RECOGNIZER_KEY
+            logger.info(f"key: {env_helper.AZURE_FORM_RECOGNIZER_KEY}")
 
             self.document_analysis_client = DocumentAnalysisClient(
                 endpoint=self.AZURE_FORM_RECOGNIZER_ENDPOINT,
@@ -80,6 +85,8 @@ class AzureFormRecognizerClient:
         try:
             logger.info("Method begin_analyze_document_from_url started")
             logger.info(f"Model ID selected: {model_id}")
+            logger.info(f"source_url : {source_url}")
+
             poller = self.document_analysis_client.begin_analyze_document_from_url(
                 model_id, document_url=source_url
             )
