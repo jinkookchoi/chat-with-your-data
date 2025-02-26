@@ -15,13 +15,18 @@ param sku object = {
 }
 
 param allowedIpRules array = []
-param networkAcls object = empty(allowedIpRules) 
- ? {
-  defaultAction: 'Allow'
-} 
- : {
-  ipRules: allowedIpRules
+// param networkAcls object = empty(allowedIpRules)
+//  ? {
+//   defaultAction: 'Allow'
+// }
+//  : {
+//   ipRules: allowedIpRules
+//   defaultAction: 'Deny'
+// }
+
+param networkAcls object = {
   defaultAction: 'Deny'
+  ipRules: length(allowedIpRules) > 0 ? allowedIpRules : null
 }
 
 resource account 'Microsoft.CognitiveServices/accounts@2023-05-01' = {
@@ -47,11 +52,10 @@ for deployment in deployments: {
   name: deployment.name
   properties: {
     model: deployment.model
-    raiPolicyName: contains(deployment, 'raiPolicyName') ? deployment.raiPolicyName : null
+    // Responsible AI (RAI) 정책을 지정하는 속성. content safety 추가 검토 필요하여 반영 안함
+    // raiPolicyName: contains(deployment, 'raiPolicyName') ? deployment.raiPolicyName : null
   }
-  sku: contains(deployment, 'sku') 
-   ? deployment.sku 
-   : {
+  sku: deployment.?sku ?? {
     name: 'Standard'
     capacity: 20
   }

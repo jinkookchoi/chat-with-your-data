@@ -9,6 +9,9 @@ param appServicePlanId string
 param keyVaultName string = ''
 param managedIdentity bool = !empty(keyVaultName)
 
+param virtualNetworkName string = ''
+param subnetNetworkName string = ''
+
 // Runtime Properties
 @allowed([
   'dotnet'
@@ -52,6 +55,9 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
   tags: tags
   kind: kind
   properties: {
+    virtualNetworkSubnetId: subnetNetworkName == ''
+    ? null
+    : resourceId('Microsoft.Network/virtualNetworks/subnets', virtualNetworkName, subnetNetworkName)
     serverFarmId: appServicePlanId
     siteConfig: {
       linuxFxVersion: linuxFxVersion
