@@ -1,7 +1,9 @@
+import os
 import logging
 from azure.core.credentials import AzureKeyCredential
 from azure.ai.formrecognizer import DocumentAnalysisClient
 from azure.identity import DefaultAzureCredential
+from urllib.parse import urlparse
 import html
 import traceback
 from .env_helper import EnvHelper
@@ -12,13 +14,11 @@ logger = logging.getLogger(__name__)
 class AzureFormRecognizerClient:
     def __init__(self) -> None:
         env_helper: EnvHelper = EnvHelper()
-        
+
 
         self.AZURE_FORM_RECOGNIZER_ENDPOINT: str = (
             env_helper.AZURE_FORM_RECOGNIZER_ENDPOINT
         )
-        logger.info(f"azure_auth_type: {env_helper.AZURE_AUTH_TYPE}")
-        logger.info(f"endpoint: {env_helper.AZURE_FORM_RECOGNIZER_ENDPOINT}")
 
         if env_helper.AZURE_AUTH_TYPE == "rbac":
             self.document_analysis_client = DocumentAnalysisClient(
@@ -30,7 +30,6 @@ class AzureFormRecognizerClient:
             )
         else:
             self.AZURE_FORM_RECOGNIZER_KEY: str = env_helper.AZURE_FORM_RECOGNIZER_KEY
-            logger.info(f"key: {env_helper.AZURE_FORM_RECOGNIZER_KEY}")
 
             self.document_analysis_client = DocumentAnalysisClient(
                 endpoint=self.AZURE_FORM_RECOGNIZER_ENDPOINT,
@@ -87,9 +86,21 @@ class AzureFormRecognizerClient:
             logger.info(f"Model ID selected: {model_id}")
             logger.info(f"source_url : {source_url}")
 
-            poller = self.document_analysis_client.begin_analyze_document_from_url(
-                model_id, document_url=source_url
-            )
+            parsed_url = urlparse(source_url)
+
+            if parsed_url.scheme in ["http", "https"]:
+                poller = self.document_analysis_client.begin_analyze_document_from_url(
+                    model_id, document_url=source_url
+                )
+            else:
+                if os.path.exists(source_url):
+                    with open(source_url, "rb") as file:
+                        poller = self.document_analysis_client.begin_analyze_document(
+                            model_id, document=file
+                        )
+                else:
+                    raise FileNotFoundError(f"Warning: File not found: {source_url}. Skipping analysis.")
+
             form_recognizer_results = poller.result()
 
             # (if using layout) mark all the positions of headers
