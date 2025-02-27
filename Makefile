@@ -77,4 +77,4 @@ provision-container: ## 🚀 Deploy apps with container to Azure
 	@azd env set APP_NAME ${APP_NAME}
 	@azd provision
 	@chmod +x ./scripts/deploy_function_keys.sh
-	@WAIT_TIME=180 ./scripts/deploy_function_keys.sh
+	@WAIT_TIME=240 ./scripts/deploy_function_keys.sh
