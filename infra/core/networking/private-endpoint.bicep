@@ -35,14 +35,13 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2024-05-01' = {
 }
 
 resource privateDnsZone 'Microsoft.Network/privateDnsZones@2024-06-01' = {
-  name: privateDnsZoneName 
+  name: privateDnsZoneName
   location: 'global'
 }
 
 resource vnet 'Microsoft.Network/virtualNetworks@2024-05-01' existing = {
   name: vnetName
 }
-
 
 resource vnetLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2024-06-01' = {
   name: 'vn-links-${prefix}'

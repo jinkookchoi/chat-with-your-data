@@ -18,7 +18,7 @@ resource functionHost 'Microsoft.Web/sites/host@2022-03-01' existing = {
 // ./scripts/deploy_function_keys.sh로 별도 배포함
 #disable-next-line BCP081
 resource functionNameDefaultClientKey 'Microsoft.Web/sites/host/functionKeys@2018-11-01' = {
-  parent:functionHost
+  parent: functionHost
   name: keyName
   properties: {
     value: clientKey

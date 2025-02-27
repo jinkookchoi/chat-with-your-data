@@ -8,7 +8,7 @@ param deployments array = []
 param kind string = 'OpenAI'
 param managedIdentity bool = false
 
-@allowed([ 'Enabled', 'Disabled' ])
+@allowed(['Enabled', 'Disabled'])
 param publicNetworkAccess string = 'Enabled'
 param sku object = {
   name: 'S0'
@@ -47,19 +47,19 @@ resource account 'Microsoft.CognitiveServices/accounts@2023-05-01' = {
 
 @batchSize(1)
 resource deployment 'Microsoft.CognitiveServices/accounts/deployments@2023-05-01' = [
-for deployment in deployments: {
-  parent: account
-  name: deployment.name
-  properties: {
-    model: deployment.model
-    // Responsible AI (RAI) 정책을 지정하는 속성. content safety 추가 검토 필요하여 반영 안함
-    // raiPolicyName: contains(deployment, 'raiPolicyName') ? deployment.raiPolicyName : null
+  for deployment in deployments: {
+    parent: account
+    name: deployment.name
+    properties: {
+      model: deployment.model
+      // Responsible AI (RAI) 정책을 지정하는 속성. content safety 추가 검토 필요하여 반영 안함
+      // raiPolicyName: contains(deployment, 'raiPolicyName') ? deployment.raiPolicyName : null
+    }
+    sku: deployment.?sku ?? {
+      name: 'Standard'
+      capacity: 20
+    }
   }
-  sku: deployment.?sku ?? {
-    name: 'Standard'
-    capacity: 20
-  }
-}
 ]
 
 output endpoint string = account.properties.endpoint

@@ -56,8 +56,8 @@ resource appService 'Microsoft.Web/sites@2022-03-01' = {
   kind: kind
   properties: {
     virtualNetworkSubnetId: subnetNetworkName == ''
-    ? null
-    : resourceId('Microsoft.Network/virtualNetworks/subnets', virtualNetworkName, subnetNetworkName)
+      ? null
+      : resourceId('Microsoft.Network/virtualNetworks/subnets', virtualNetworkName, subnetNetworkName)
     serverFarmId: appServicePlanId
     siteConfig: {
       linuxFxVersion: linuxFxVersion

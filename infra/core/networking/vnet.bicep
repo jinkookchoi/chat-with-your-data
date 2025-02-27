@@ -4,7 +4,6 @@ param location string = resourceGroup().location
 param tags object = {}
 param addressPrefix string
 
-
 // https://learn.microsoft.com/en-us/azure/cosmos-db/how-to-configure-private-endpoints?tabs=arm-bicep
 resource vnet 'Microsoft.Network/virtualNetworks@2024-05-01' = {
   name: name

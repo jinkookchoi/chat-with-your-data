@@ -483,7 +483,6 @@ var openAiDeployments = concat(
     : []
 )
 
-
 module openai 'core/ai/cognitiveservices.bicep' = {
   name: azureOpenAIResourceName
   scope: rg
@@ -627,16 +626,18 @@ module hostingplan './core/host/appserviceplan.bicep' = {
   params: {
     name: hostingPlanName
     location: location
-    sku: isPremiumV3 ? {
-      name: hostingPlanSku
-      tier: skuTier
-      size: 'P1v3'
-      family: 'Pv3'
-      capacity: 1
-    } : {
-      name: hostingPlanSku
-      tier: skuTier
-    }
+    sku: isPremiumV3
+      ? {
+          name: hostingPlanSku
+          tier: skuTier
+          size: 'P1v3'
+          family: 'Pv3'
+          capacity: 1
+        }
+      : {
+          name: hostingPlanSku
+          tier: skuTier
+        }
     reserved: true
     tags: { CostControl: 'Ignore' }
   }
@@ -1374,7 +1375,6 @@ module storage 'core/storage/storage-account.bicep' = {
   }
 }
 
-
 module network './core/networking/vnet.bicep' = {
   name: 'network'
   scope: rg
@@ -1385,7 +1385,6 @@ module network './core/networking/vnet.bicep' = {
     tags: {}
   }
 }
-
 
 module hostSubnetModule './core/networking/subnet.bicep' = {
   name: hostSubnetName
@@ -1440,7 +1439,6 @@ module blobStoragePrivateEndpoint './core/networking/private-endpoint.bicep' = {
   }
 }
 
-
 module queueStoragePrivateEndpoint './core/networking/private-endpoint.bicep' = {
   name: 'queueStoragePrivateEndpoint'
   scope: rg
@@ -1456,7 +1454,6 @@ module queueStoragePrivateEndpoint './core/networking/private-endpoint.bicep' = 
   }
 }
 
-
 module tableStoragePrivateEndpoint './core/networking/private-endpoint.bicep' = {
   name: 'tableStoragePrivateEndpoint'
   scope: rg
@@ -1471,7 +1468,6 @@ module tableStoragePrivateEndpoint './core/networking/private-endpoint.bicep' = 
     privateDnsZoneName: 'privatelink.table.${environment().suffixes.storage}'
   }
 }
-
 
 module searchPrivateEndpoint './core/networking/private-endpoint.bicep' = {
   name: 'searchPrivateEndpoint'
@@ -1514,7 +1510,7 @@ module cosmosdbPrivateEndpoint './core/networking/private-endpoint.bicep' = {
     resourceName: cosmosDBModule.outputs.cosmosOutput.cosmosAccountName
     groupId: 'Sql'
     prefix: 'cosmosdb-${resourceToken}'
-    privateDnsZoneName:  'privatelink.documents.azure.com'
+    privateDnsZoneName: 'privatelink.documents.azure.com'
   }
 }
 

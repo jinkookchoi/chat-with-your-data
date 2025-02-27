@@ -13,14 +13,16 @@ resource subnet 'Microsoft.Network/virtualNetworks/subnets@2021-05-01' = {
   name: subnetName
   properties: {
     addressPrefixes: [addressPrefix]
-    delegations: delegationService != '' ? [
-      {
-        name: 'delegation'
-        properties: {
-          serviceName: delegationService
-        }
-      }
-    ] : []
+    delegations: delegationService != ''
+      ? [
+          {
+            name: 'delegation'
+            properties: {
+              serviceName: delegationService
+            }
+          }
+        ]
+      : []
     privateEndpointNetworkPolicies: privateEndpointNetworkPolicies != '' ? privateEndpointNetworkPolicies : null
   }
 }
