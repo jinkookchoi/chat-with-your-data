@@ -299,7 +299,7 @@ param useKeyVault bool = authType == 'rbac' ? false : true
 param principalId string = ''
 
 @description('Hosting model for the web apps. This value is fixed as "container", which uses prebuilt containers for faster deployment.')
-param hostingModel string = 'code' // container
+param hostingModel string = 'container' // container, code
 
 @allowed([
   'CRITICAL'
@@ -321,14 +321,14 @@ param azureMachineLearningName string = 'aml-${resourceToken}'
 @description('Allowd IP Rules List for Azure Service')
 param allowedIpRules array = []
 
-@description('Frontend and API Server Docker Image')
-param frontendDockerImage string = ''
+@description('Frontend and API Server Docker Image. You can set your own docker image')
+param frontendDockerImage string = 'jinkookchoi/rag-webapp'
 
-@description('Admin Docker Image')
-param adminDockerImage string = ''
+@description('Admin Docker Image. You can set your own docker image')
+param adminDockerImage string = 'jinkookchoi/rag-adminwebapp'
 
-@description('Function Backend App Docker Image')
-param backendDockerImage string = ''
+@description('Function Backend App Docker Image. You cant set your own docker image')
+param backendDockerImage string = 'jinkookchoi/rag-backend'
 
 @description('Azure Virtual Network Name')
 param azureVirtualNetworkName string = 'vnet-${resourceToken}'

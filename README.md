@@ -63,6 +63,10 @@
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjinkookchoi%2Fchat-with-your-data%2Frefs%2Fheads%2Fmain%2Finfra%2Fmain.json)
 
+- 배포 후 `Function App`에 클라이언트 키 세팅 필요(Function App의 Cold Start 이슈)
+- Key Name: `ClientKey`
+- Ke Value: Admin App의 `FUNCTION_KEY` 값 확인
+
 ### 배포 방식 2. `azd` cli 배포
 
 ```bash
