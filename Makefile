@@ -69,3 +69,12 @@ deploy: azd-login ## 🚀 Deploy everything to Azure
 destroy: azd-login ## 🧨 Destroy everything in Azure
 	@echo -e "\e[34m$@\e[0m" || true
 	@azd down --force --purge --no-prompt
+
+provision-container: ## 🚀 Deploy apps with container to Azure
+	@echo -e "\e[34m$@\e[0m" || true
+	@export APP_NAME=app-$(shell cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 4 | head -n 1)
+	@azd env new ${AZURE_ENV_NAME}
+	@azd env set APP_NAME ${APP_NAME}
+	@azd provision
+	@chmod +x ./scripts/deploy_function_keys.sh
+	@WAIT_TIME=180 ./scripts/deploy_function_keys.sh
