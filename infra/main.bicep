@@ -10,7 +10,7 @@ param appName string // ref. azd env set APP_NAME app-08
 @description('Name of the the environment which is used to generate a short unique hash used in all resources.')
 param environmentName string
 
-param resourceToken string = toLower(uniqueString(subscription().id, environmentName, location))
+param resourceToken string = toLower(uniqueString(subscription().id, appName, environmentName, location))
 
 @description('Location for all resources.')
 param location string = 'Korea Central'
