@@ -13,7 +13,7 @@ param environmentName string
 param resourceToken string = toLower(uniqueString(subscription().id, environmentName, location))
 
 @description('Location for all resources.')
-param location string
+param location string = 'Korea Central'
 
 @description('Name of App Service plan')
 param hostingPlanName string = 'hosting-plan-${resourceToken}'
@@ -299,7 +299,7 @@ param useKeyVault bool = authType == 'rbac' ? false : true
 param principalId string = ''
 
 @description('Hosting model for the web apps. This value is fixed as "container", which uses prebuilt containers for faster deployment.')
-param hostingModel string = 'container'
+param hostingModel string = 'code' // container
 
 @allowed([
   'CRITICAL'
@@ -322,13 +322,13 @@ param azureMachineLearningName string = 'aml-${resourceToken}'
 param allowedIpRules array = []
 
 @description('Frontend and API Server Docker Image')
-param frontendDockerImage string
+param frontendDockerImage string = ''
 
 @description('Admin Docker Image')
-param adminDockerImage string
+param adminDockerImage string = ''
 
 @description('Function Backend App Docker Image')
-param backendDockerImage string
+param backendDockerImage string = ''
 
 @description('Azure Virtual Network Name')
 param azureVirtualNetworkName string = 'vnet-${resourceToken}'

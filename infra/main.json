@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.33.93.31351",
-      "templateHash": "4824447300213228040"
+      "templateHash": "3606087307705881423"
     }
   },
   "parameters": {
@@ -31,6 +31,7 @@
     },
     "location": {
       "type": "string",
+      "defaultValue": "Korea Central",
       "metadata": {
         "description": "Location for all resources."
       }
@@ -605,7 +606,7 @@
     },
     "hostingModel": {
       "type": "string",
-      "defaultValue": "container",
+      "defaultValue": "code",
       "metadata": {
         "description": "Hosting model for the web apps. This value is fixed as \"container\", which uses prebuilt containers for faster deployment."
       }
@@ -644,18 +645,21 @@
     },
     "frontendDockerImage": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Frontend and API Server Docker Image"
       }
     },
     "adminDockerImage": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Admin Docker Image"
       }
     },
     "backendDockerImage": {
       "type": "string",
+      "defaultValue": "",
       "metadata": {
         "description": "Function Backend App Docker Image"
       }
