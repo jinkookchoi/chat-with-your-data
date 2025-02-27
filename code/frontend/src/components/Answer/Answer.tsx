@@ -109,9 +109,6 @@ export const Answer = ({
 
   useEffect(() => {
     const fetchSythesizerData = async () => {
-      // speech 기능임시 block
-      return
-
       const response = await fetch("/api/speech");
       try {
         if (!response.ok) {
