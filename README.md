@@ -70,7 +70,7 @@ azd auth login
 azd env new // ex. dev
 azd env set APP_NAME ${APP_NAME} // app-chat
 azd provision
-./scrips/deploy_function_keys.sh
+./scrips/deploy_function_keys.sh // Function App의 client key 배포
 ```
 
 ---
