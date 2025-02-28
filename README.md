@@ -1,7 +1,8 @@
 # (DRAFT) RAG 채팅 어플리케이션
 
 ## 💬 **RAG 채팅 어플리케이션 개요**
-> ⚡ **이 프로젝트는 아래 GitHub 레포지토리를 기반으로 Azure 자원, 코드 등을 재구성한 것입니다.**
+
+> ⚡ **이 프로젝트는 아래 GitHub 레포지토리를 기반으로 Azure 자원,일부 코드 등을 재구성한 것입니다.**
 > [🔗 **Azure-Samples/chat-with-your-data-solution-accelerator**](https://github.com/Azure-Samples/chat-with-your-data-solution-accelerator)
 
 ---
@@ -57,9 +58,9 @@
 
 - 📝 **Bicep 템플릿**을 사용한 Azure 리소스 배포
 - 📦 **Azure Container Registry**에 Docker 이미지 저장 및 배포
-- 🔗 **VNet 구성** 및 **Private Endpoint**를 통한 보안 강화
+- 🔗 **원클릭 배포** 혹은 **cli 명령어** 방식 등 활용
 
-### 배포 방식 1. 원클릭 배포
+### 배포 방식 1. 🖱️ 원클릭 배포
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fjinkookchoi%2Fchat-with-your-data%2Frefs%2Fheads%2Fmain%2Finfra%2Fmain.json)
 
@@ -67,26 +68,102 @@
 - Key Name: `ClientKey`
 - Ke Value: Admin App의 `FUNCTION_KEY` 값 확인
 
-### 배포 방식 2. `azd` cli 배포
+### 배포 방식 2. 👩🏻‍💻 `azd` CLI 배포
+
+#### 1. 필수 도구 설치
+
+Azure CLI 및 `azd`(Azure Developer CLI)가 설치되어 있어야 합니다.
+설치가 되어 있지 않다면 다음 명령어로 설치하세요.
 
 ```bash
-azd auth login
-azd env new // ex. dev
-azd env set APP_NAME ${APP_NAME} // app-chat
-azd provision
-./scrips/deploy_function_keys.sh // Function App의 client key 배포
+# Azure CLI 설치 (MacOS, Homebrew 이용)
+brew install azure-cli
+
+# Azure Developer CLI 설치
+curl -fsSL https://aka.ms/install-azd.sh | bash
 ```
 
+#### 2. 레포지토리 클론
+
+```bash
+git clone https://github.com/your-repo/chat-with-your-data.git
+cd chat-with-your-data
+```
+
+#### 3. Azure 로그인 및 환경 설정
+
+```bash
+# Azure 로그인
+azd auth login
+
+# 새로운 배포 환경 생성 (예: dev)
+azd env new dev
+```
+
+#### 4. 애플리케이션 이름 설정
+
+```bash
+export APP_NAME=app-chat
+azd env set APP_NAME $APP_NAME
+```
+
+#### 5. Azure 리소스 프로비저닝
+
+```bash
+azd provision
+```
+
+이 명령어는 필요한 Azure 리소스를 자동으로 생성하고 설정합니다.
+
+#### 6. Function App 클라이언트 키 배포
+
+```bash
+./scripts/deploy_function_keys.sh
+```
+
+이 스크립트는 Function App의 `ClientKey` 값을 자동으로 설정합니다.
+
 ---
 
-### 💬 주요 변경 및 최적화 사항
+### 확인 및 배포 완료
+
+#### 1. Azure Portal에서 리소스 확인
+
+Azure Portal(https://portal.azure.com)에 로그인한 후, 배포된 리소스를 확인하세요.
+
+- **Web App**: 배포된 Web App을 찾습니다.
+    - 채팅용, 어드민용 각각 생성되어 있습니다.
+- **Function App**: 배포된 Function App을 찾습니다.
+
+#### 2. Web App 실행 및 확인
+
+1. Azure Portal에서 **Web App**으로 이동합니다.
+2. **개요(Overview)** 탭에서 **URL**을 클릭하여 브라우저에서 엽니다.
+    - 채팅용, 어드민용 각각 확인합니다.
+3. 페이지가 정상적으로 로드되는지 확인합니다.
+
+#### 3. Function App 확인
+
+1. Azure Portal에서 **Function App**으로 이동합니다.
+2. **Functions** 메뉴에서 배포된 함수 목록을 확인합니다.
+
+배포된 애플리케이션이 정상적으로 동작하면 모든 과정이 완료된 것입니다. 추가적인 설정이 필요하면 Azure Portal에서 리소스를 관리하세요.
+
+
+<!--
+---
+
+## 💬 주요 변경 및 최적화 사항
+
+-->
 
 ---
 
-### 🎯 요약
+## 🎯 요약
 
 - 📦 **이 프로젝트는 [Azure-Samples/chat-with-your-data-solution-accelerator](https://github.com/Azure-Samples/chat-with-your-data-solution-accelerator) 레포지토리를 기반으로 재구성되었습니다.**
 - **Azure OpenAI**, **AI Search**, **Azure Functions**, **Azure Container Apps**를 사용하여 **RAG 기반 채팅 어플리케이션**을 구현되었습니다.
+- **배포 타겟이 되는 Azure 환경에 따라 자원 구성 및 일부 코드 변경이 필요할 수 있습니다.**
 
 ---
 
